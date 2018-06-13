@@ -132,6 +132,16 @@ public abstract class Actor
     {
         return height;
     }
+    
+    public float getCenterX ()
+    {
+        return x + (width / 2f);
+    }
+    
+    public float getCenterY ()
+    {
+        return y + (height / 2f);
+    }
 
     public void setDeltaX (float deltaX)
     {

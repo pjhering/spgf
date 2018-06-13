@@ -1,19 +1,38 @@
 package org.petehering.spgf;
 
+import java.awt.Graphics;
 import java.util.HashSet;
+import static java.util.Objects.requireNonNull;
 import java.util.Set;
 
 public class Stage implements StageManager
 {
+    
+    private final Background background;
+    private final TileLayer tiles;
+    private final Viewport viewport;
+    public final int width;
+    public final int height;
     private final Set<Actor> actors;
     private final Set<Actor> added;
     private final Set<Actor> removed;
-
-    public Stage ()
+    private Actor player;
+    
+    public Stage (Background background, TileLayer tiles, Viewport viewport)
     {
+        this.background = background;
+        this.tiles = requireNonNull (tiles);
+        this.width = tiles.getLayerWidth();
+        this.height = tiles.getLayerHeight();
+        this.viewport = requireNonNull (viewport);
         this.actors = new HashSet<> ();
         this.added = new HashSet<> ();
         this.removed = new HashSet<> ();
+    }
+    
+    public void draw (Graphics g)
+    {
+        
     }
     
     public void update (long elapsed)
@@ -21,6 +40,8 @@ public class Stage implements StageManager
         actors.forEach ((Actor a) -> a.act (elapsed));
         doActorCollisions ();
         doAddRemove ();
+        
+        viewport.update(this);
     }
 
     private void doActorCollisions ()
@@ -56,5 +77,15 @@ public class Stage implements StageManager
     public boolean remove (Actor actor)
     {
         return removed.add (actor);
+    }
+
+    public Actor getPlayer()
+    {
+        return player;
+    }
+
+    public void setPlayer(Actor player)
+    {
+        this.player = player;
     }
 }
