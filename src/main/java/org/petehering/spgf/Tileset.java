@@ -1,60 +1,58 @@
 package org.petehering.spgf;
 
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
-import static org.petehering.spgf.Utility.getSubimageArray;
-import static org.petehering.spgf.Utility.requireInRange;
+import static org.petehering.spgf.Utility.requireGreaterThan;
+import static org.petehering.spgf.Utility.requireNonNull;
 
 /**
- * A Tileset is an image that is divided into uniformly sized subimages by rows
- * and columns.
- *
+ * A Tileset is a collection of uniformly sized images that may be blocked and
+ * may be hidden.
  * @author tinman
  */
 public class Tileset
 {
-
-    private final BufferedImage image;
-    private final BufferedImage[] subimages;
-    public final int width;
-    public final int height;
-    public final int rows;
-    public final int columns;
+    private BufferedImage[] images;
     public final int tileWidth;
     public final int tileHeight;
-
-    public Tileset(String path, int rows, int columns)
+    private boolean[] blocked;
+    private boolean[] hidden;
+    
+    public Tileset (BufferedImage[] images, int tileWidth, int tileHeight)
     {
-        try (InputStream stream = getClass().getResourceAsStream(path))
-        {
-            this.image = ImageIO.read(stream);
-            this.width = image.getWidth();
-            this.height = image.getHeight();
-            this.rows = requireInRange(rows, 0, height);
-            this.columns = requireInRange(columns, 0, width);
-            this.tileHeight = height / rows;
-            this.tileWidth = width / columns;
-            this.subimages = subimages();
-        }
-        catch (Exception ex)
-        {
-            throw new RuntimeException(ex);
-        }
+        this.images = requireNonNull (images);
+        this.tileWidth = requireGreaterThan (0, tileWidth);
+        this.tileHeight = requireGreaterThan (0, tileHeight);
+        this.hidden = new boolean[images.length];
+        this.blocked = new boolean[images.length];
     }
-
-    public BufferedImage getSubImage(int i)
+    
+    public int length ()
     {
-        return subimages[i];
+        return images.length;
     }
-
-    public int length()
+    
+    public BufferedImage getImage (int i)
     {
-        return subimages.length;
+        return images[i];
     }
-
-    private BufferedImage[] subimages()
+    
+    public boolean isHidden (int i)
     {
-        return getSubimageArray(image, 0, 0, image.getWidth(), image.getHeight(), rows, columns);
+        return hidden[i];
+    }
+    
+    public void setHidden (int i, boolean b)
+    {
+        this.hidden[i] = b;
+    }
+    
+    public boolean isBlocked (int i)
+    {
+        return blocked[i];
+    }
+    
+    public void setBlocked (int i, boolean b)
+    {
+        this.blocked[i] = b;
     }
 }

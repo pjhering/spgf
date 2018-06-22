@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import static java.util.Objects.requireNonNull;
 import javax.imageio.ImageIO;
+import static org.petehering.spgf.Utility.getSubimageArray;
 
 public class Spritesheet
 {
@@ -23,21 +24,21 @@ public class Spritesheet
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            throw new RuntimeException (ex);
         }
     }
 
-    public BufferedImage[] getImageArray(int x, int y, int width, int height, int rows, int columns)
+    public BufferedImage[] array(int x, int y, int width, int height, int rows, int columns)
     {
-        return Utility.getSubimageArray(image, x, y, width, height, rows, columns);
+        return getSubimageArray(image, x, y, width, height, rows, columns);
     }
 
-    public BufferedImage[] getImageArray(int rows, int columns)
+    public BufferedImage[] array(int rows, int columns)
     {
-        return getImageArray(0, 0, image.getWidth(), image.getHeight(), rows, columns);
+        return array(0, 0, image.getWidth(), image.getHeight(), rows, columns);
     }
 
-    public BufferedImage getImage(int x, int y, int width, int height)
+    public BufferedImage subimage(int x, int y, int width, int height)
     {
         return image.getSubimage(x, y, width, height);
     }

@@ -2,21 +2,10 @@ package org.petehering.spgf;
 
 import java.awt.image.BufferedImage;
 
-public class Utility
+public final class Utility
 {
     public static final String SPACES = "\\s+";
-    public static final String IMAGE = "image";
-    public static final String BACKGROUND = "background";
-    public static final String TILESET = "tileset";
-    public static final String SPRITES = "sprites";
-    public static final String TILES = "tiles";
-    public static final String ACTOR = "actor";
-    public static final String CLIP = "clip";
-    public static final String MIDI = "midi";
-    public static final String TEXT = "text";
-    public static final String FONT = "font";
-    public static final String COLOR = "color";
-    
+
     private Utility()
     {
         //not used

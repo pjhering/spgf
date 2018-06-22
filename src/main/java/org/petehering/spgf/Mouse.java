@@ -27,7 +27,6 @@ public class Mouse implements MouseInputListener
         this.down = true;
         this.button = e.getButton();
         this.clickCount = e.getClickCount();
-        this.location = e.getPoint();
     }
 
     @Override
@@ -36,7 +35,6 @@ public class Mouse implements MouseInputListener
         this.down = false;
         this.button = -1;
         this.clickCount = 0;
-        this.location = null;
     }
 
     @Override

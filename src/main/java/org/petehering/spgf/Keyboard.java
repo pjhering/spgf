@@ -22,7 +22,7 @@ public class Keyboard implements KeyListener
 
     public boolean isPressed(int key)
     {
-        return previous[key] && !current[key];
+        return current[key] && !previous[key];
     }
 
     public void update()
