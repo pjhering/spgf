@@ -12,6 +12,11 @@ public final class Utility
         //not used
     }
 
+    public static BufferedImage subimage(BufferedImage source, int x, int y, int width, int height)
+    {
+        return source.getSubimage(x, y, width, height);
+    }
+
     public static BufferedImage[] subimages(BufferedImage source, int rows, int columns)
     {
         return subimages(source, 0, 0, source.getWidth(), source.getHeight(), rows, columns);

@@ -1,21 +1,24 @@
 package org.petehering.spgf;
 
+import com.sun.glass.events.KeyEvent;
 import static java.awt.Color.WHITE;
 import java.awt.Graphics;
+import static java.awt.event.KeyEvent.VK_COMMA;
 import static java.awt.event.KeyEvent.VK_DOWN;
 import static java.awt.event.KeyEvent.VK_LEFT;
+import static java.awt.event.KeyEvent.VK_PERIOD;
 import static java.awt.event.KeyEvent.VK_RIGHT;
 import static java.awt.event.KeyEvent.VK_UP;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import static java.lang.System.out;
 import javax.swing.JFrame;
 import spgf.core.Game;
 import spgf.core.GamePanel;
 import spgf.core.Keyboard;
 import spgf.core.Loop;
 import spgf.platform.IniParser;
+import spgf.platform.State;
 import spgf.platform.TileLayer;
 import spgf.platform.Viewport;
 
@@ -26,9 +29,10 @@ public class ViewportTest implements Game
     {
         IniParser parser = new IniParser("/test01.ini");
         TileLayer layer = parser.getTileLayer();
+        State[] states = parser.getStates("player");
         GamePanel panel = new GamePanel(640, 480);
         Viewport view = new Viewport(640, 480);
-        ViewportTest game = new ViewportTest(panel, layer, view);
+        ViewportTest game = new ViewportTest(panel, layer, states, view);
         Loop loop = new Loop(game, 60);
 
         JFrame frame = panel.openInWindow("Viewport Test");
@@ -54,14 +58,17 @@ public class ViewportTest implements Game
 
     private final GamePanel gp;
     private final TileLayer tl;
+    private final State[] s;
     private final Viewport vp;
     private float x;
     private float y;
+    private int i;
 
-    ViewportTest(GamePanel gp, TileLayer tl, Viewport vp)
+    ViewportTest(GamePanel gp, TileLayer tl, State[] s, Viewport vp)
     {
         this.gp = gp;
         this.tl = tl;
+        this.s = s;
         this.vp = vp;
     }
 
@@ -70,6 +77,7 @@ public class ViewportTest implements Game
     {
         x = tl.width / 2f;
         y = tl.height / 2f;
+        i = 0;
     }
 
     @Override
@@ -92,15 +100,31 @@ public class ViewportTest implements Game
         {
             x += elapsedMilliseconds * 0.0625f;
         }
+        if (kb.isPressed(VK_COMMA))
+        {
+            i -= 1;
+            
+            if (i < 0)
+            {
+                i = s.length - 1;
+            }
+            
+            s[i].reset();
+        }
+        if (kb.isPressed(VK_PERIOD))
+        {
+            i = (i + 1) % s.length;
+            s[i].reset();
+        }
         
         kb.update();
         vp.update(x, y, tl);
+        s[i].update(elapsedMilliseconds, x, y);
 
         gp.clear();
         Graphics g = gp.getDrawGraphics();
         tl.draw(g, vp);
-        g.setColor(WHITE);
-        g.drawOval((int)x - 5, (int)y - 5, 10, 10);
+        s[i].draw(g);
         gp.present();
     }
 

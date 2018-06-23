@@ -4,6 +4,7 @@ import spgf.platform.IniParser;
 import spgf.platform.TileLayer;
 import java.io.IOException;
 import static java.lang.System.out;
+import spgf.platform.State;
 import spgf.platform.Tile;
 
 public class IniParserTest
@@ -13,6 +14,7 @@ public class IniParserTest
     {
         IniParser parser = new IniParser("/test01.ini");
         TileLayer tl = parser.getTileLayer();
+        State[] player = parser.getStates("player");
         
         for (int r = 0; r < tl.rows; r++)
         {
@@ -30,6 +32,11 @@ public class IniParserTest
                 }
             }
             out.println ();
+        }
+        
+        for (State s : player)
+        {
+            out.printf("%2d: %b\n", s.id, s.loop);
         }
     }
 }

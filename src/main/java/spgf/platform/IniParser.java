@@ -7,11 +7,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 import static java.lang.String.format;
 import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import spgf.core.Spritesheet;
 import static spgf.core.Utility.SPACES;
 import static spgf.core.Utility.subimages;
 
@@ -21,7 +23,8 @@ public class IniParser
     private String line;
     private String[] tokens;
     private int lineNumber;
-    private Map<String, BufferedImage> images;
+    private Map<String, BufferedImage> imageMap;
+    private Map<String, State[]> statesMap;
     private TileLayer tileLayer;
     private BufferedImage[] tileset;
     private boolean[] blocked;
@@ -29,7 +32,8 @@ public class IniParser
 
     public IniParser(String path) throws IOException
     {
-        images = new HashMap<>();
+        imageMap = new HashMap<>();
+        statesMap = new HashMap<>();
 
         try (InputStream stream = getClass().getResourceAsStream(path))
         {
@@ -45,6 +49,9 @@ public class IniParser
                         break;
                     case "[tilelayer]":
                         parseTileLayer(buffer);
+                        break;
+                    case "[states]":
+                        parseStates(buffer);
                         break;
                     default:
                         throw exception("unexpected input: " + line);
@@ -125,6 +132,60 @@ public class IniParser
         }
     }
 
+    private void parseStates(BufferedReader buffer) throws IOException
+    {
+        if (!next(buffer))
+        {
+            throw exception ("expected states configuration");
+        }
+        
+        String key = tokens[0];
+        Spritesheet source = new Spritesheet(loadImage (tokens[1]));
+        int count = parseInt(tokens[2]);
+        State[] states = new State[count];
+        
+        for (int i = 0; i < count; i++)
+        {
+            if (next(buffer))
+            {
+                switch (tokens.length)
+                {
+                    case 4: // single frame
+                    {
+                        int x = parseInt(tokens[0]);
+                        int y = parseInt(tokens[1]);
+                        int w = parseInt(tokens[2]);
+                        int h = parseInt(tokens[3]);
+                        states[i] = new State (i, source.subimage(x, y, w, h));
+                    }
+                    break;
+                        
+                    case 8: // multiple frame
+                    {
+                        int x = parseInt(tokens[0]);
+                        int y = parseInt(tokens[1]);
+                        int w = parseInt(tokens[2]);
+                        int h = parseInt(tokens[3]);
+                        int r = parseInt(tokens[4]);
+                        int c = parseInt(tokens[5]);
+                        long fps = parseLong(tokens[6]);
+                        boolean loop = parseBoolean(tokens[7]);
+                        states[i] = new State (i, source.array(x, y, w, h, r, c), 1000L / fps, loop);
+                    }
+                    break;
+                        
+                    default:
+                        throw exception("expected 4 or 8 arguments for state definition");
+                }
+            }
+            else
+            {
+                throw exception ("expected state definition");
+            }
+        }
+        statesMap.put(key, states);
+    }
+    
     private IOException exception(String message)
     {
         return new IOException(format("%s [line: %d]", message, lineNumber));
@@ -134,16 +195,16 @@ public class IniParser
     {
         String key = path.startsWith("/") ? path : "/" + path;
 
-        if (!images.containsKey(key))
+        if (!imageMap.containsKey(key))
         {
             try (InputStream stream = getClass().getResourceAsStream(key))
             {
                 BufferedImage image = ImageIO.read(stream);
-                images.put(key, image);
+                imageMap.put(key, image);
             }
         }
 
-        return images.get(key);
+        return imageMap.get(key);
     }
 
     private boolean next(BufferedReader buffer) throws IOException
@@ -168,6 +229,11 @@ public class IniParser
         tokens = line.split(SPACES);
 
         return true;
+    }
+    
+    public State[] getStates (String key)
+    {
+        return statesMap.get(key);
     }
 
     public TileLayer getTileLayer()
