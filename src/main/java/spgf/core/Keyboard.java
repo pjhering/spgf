@@ -1,4 +1,4 @@
-package org.petehering.spgf;
+package spgf.core;
 
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.KEY_FIRST;
@@ -8,8 +8,8 @@ import java.awt.event.KeyListener;
 public class Keyboard implements KeyListener
 {
 
-    private final boolean[] current = new boolean[KEY_LAST - KEY_FIRST];
-    private final boolean[] previous = new boolean[KEY_LAST - KEY_FIRST];
+    private final boolean[] current = new boolean[KEY_LAST];
+    private final boolean[] previous = new boolean[KEY_LAST];
 
     public Keyboard()
     {
@@ -41,12 +41,12 @@ public class Keyboard implements KeyListener
     @Override
     public void keyPressed(KeyEvent e)
     {
-        current[e.getKeyCode() - KEY_FIRST] = true;
+        current[e.getKeyCode()] = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e)
     {
-        current[e.getKeyCode() - KEY_FIRST] = false;
+        current[e.getKeyCode()] = false;
     }
 }

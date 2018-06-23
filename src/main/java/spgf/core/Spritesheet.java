@@ -1,10 +1,10 @@
-package org.petehering.spgf;
+package spgf.core;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import static java.util.Objects.requireNonNull;
 import javax.imageio.ImageIO;
-import static org.petehering.spgf.Utility.subimages;
+import static spgf.core.Utility.subimages;
 
 public class Spritesheet
 {

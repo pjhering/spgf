@@ -1,9 +1,9 @@
-package org.petehering.spgf;
+package spgf.platform;
 
 import java.awt.Point;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static org.petehering.spgf.Utility.requireGreaterThan;
+import static spgf.core.Utility.requireGreaterThan;
 
 
 public class Viewport
@@ -12,7 +12,7 @@ public class Viewport
     private float y;
     public final float width;
     public final float height;
-    public final Point offset;
+    private final Point offset;
     
     public Viewport (float width, float height)
     {
@@ -43,5 +43,18 @@ public class Viewport
     public float getY()
     {
         return y;
+    }
+
+    boolean contains(Tile tile)
+    {
+        return  x < tile.x + tile.width &&
+                y < tile.y + tile.height &&
+                tile.x < x + width &&
+                tile.y < y + height;
+    }
+
+    public Point getOffset()
+    {
+        return offset;
     }
 }

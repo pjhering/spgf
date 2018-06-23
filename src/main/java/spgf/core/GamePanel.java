@@ -1,4 +1,4 @@
-package org.petehering.spgf;
+package spgf.core;
 
 import java.awt.Color;
 import static java.awt.Color.BLACK;
@@ -40,7 +40,15 @@ public class GamePanel extends JComponent
         this.mouse = new Mouse();
         this.addMouseListener(mouse);
         this.addMouseMotionListener(mouse);
+        
+        this.setFocusable(true);
     }
+//    
+//    @Override
+//    public void addNotify()
+//    {
+//        this.requestFocusInWindow();
+//    }
 
     public JFrame openInWindow(String title)
     {
@@ -80,7 +88,7 @@ public class GamePanel extends JComponent
         return ((front == page1) ? page2 : page1).getGraphics();
     }
 
-    public void flipPage()
+    public void present()
     {
         front = (front == page1) ? page2 : page1;
         repaint();

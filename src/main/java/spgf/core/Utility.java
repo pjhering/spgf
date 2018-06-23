@@ -1,4 +1,4 @@
-package org.petehering.spgf;
+package spgf.core;
 
 import java.awt.image.BufferedImage;
 

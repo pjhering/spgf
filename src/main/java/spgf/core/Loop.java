@@ -1,4 +1,4 @@
-package org.petehering.spgf;
+package spgf.core;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.requireNonNull;

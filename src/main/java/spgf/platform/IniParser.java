@@ -1,4 +1,4 @@
-package org.petehering.spgf;
+package spgf.platform;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -12,8 +12,8 @@ import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import static org.petehering.spgf.Utility.SPACES;
-import static org.petehering.spgf.Utility.subimages;
+import static spgf.core.Utility.SPACES;
+import static spgf.core.Utility.subimages;
 
 public class IniParser
 {
@@ -22,8 +22,10 @@ public class IniParser
     private String[] tokens;
     private int lineNumber;
     private Map<String, BufferedImage> images;
-    private Tileset tileset;
     private TileLayer tileLayer;
+    private BufferedImage[] tileset;
+    private boolean[] blocked;
+    private boolean[] hidden;
 
     public IniParser(String path) throws IOException
     {
@@ -53,8 +55,7 @@ public class IniParser
 
     private void parseTileset(BufferedReader buffer) throws IOException
     {
-//        if (!next (buffer)) throw exception ("expected tileset configuration");
-        next(buffer);
+        if (!next (buffer)) throw exception ("expected tileset configuration");
 
         int tileWidth = parseInt(tokens[1]);
         int tileHeight = parseInt(tokens[2]);
@@ -62,20 +63,11 @@ public class IniParser
         int columns = parseInt(tokens[4]);
 
         BufferedImage source = loadImage(tokens[0]);
-        if (source == null)
-        {
-            out.println("source is null");
-        }
+        tileset = subimages(source, rows, columns);
+        blocked = new boolean[tileset.length];
+        hidden = new boolean[tileset.length];
 
-        BufferedImage[] subimages = subimages(source, rows, columns);
-        if (subimages == null)
-        {
-            out.println("subimages array is null");
-        }
-
-        tileset = new Tileset(subimages, tileWidth, tileHeight);
-
-        for (int i = 0; i < subimages.length; i++)
+        for (int i = 0; i < tileset.length; i++)
         {
             if (!next(buffer))
             {
@@ -83,11 +75,8 @@ public class IniParser
             }
 
             int index = parseInt(tokens[0]);
-            boolean blocked = parseBoolean(tokens[1]);
-            boolean hidden = parseBoolean(tokens[2]);
-
-            tileset.setBlocked(index, blocked);
-            tileset.setHidden(index, hidden);
+            blocked[index] = parseBoolean(tokens[1]);
+            hidden[index] = parseBoolean(tokens[2]);
         }
     }
 
@@ -100,8 +89,10 @@ public class IniParser
 
         int rows = parseInt(tokens[0]);
         int columns = parseInt(tokens[1]);
+        int tileWidth = parseInt(tokens[2]);
+        int tileHeight = parseInt(tokens[3]);
 
-        tileLayer = new TileLayer(tileset, rows, columns);
+        tileLayer = new TileLayer(rows, columns, tileWidth, tileHeight);
 
         for (int r = 0; r < rows; r++)
         {
@@ -117,8 +108,19 @@ public class IniParser
                     throw exception("expected tilelayer column");
                 }
 
-                int id = parseInt(tokens[c]);
-                tileLayer.setId(r, c, id);
+                try
+                {
+                    int id = parseInt(tokens[c]);
+                    
+                    if (id <= id && id < tileset.length)
+                    {
+                        tileLayer.set(r, c, tileset[id], id, blocked[id], hidden[id]);
+                    }
+                }
+                catch (NumberFormatException ex)
+                {
+                    // ignore
+                }
             }
         }
     }
@@ -155,6 +157,7 @@ public class IniParser
 
         in = in.trim();
         lineNumber += 1;
+        out.printf("%4d: %s\n", lineNumber, in);
 
         if (in.isEmpty() || in.startsWith("#"))
         {
@@ -165,11 +168,6 @@ public class IniParser
         tokens = line.split(SPACES);
 
         return true;
-    }
-
-    public Tileset getTileset()
-    {
-        return tileset;
     }
 
     public TileLayer getTileLayer()
