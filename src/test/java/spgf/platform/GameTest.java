@@ -1,4 +1,4 @@
-package org.petehering.spgf;
+package spgf.platform;
 
 public class GameTest
 {

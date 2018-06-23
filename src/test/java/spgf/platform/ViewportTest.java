@@ -1,7 +1,5 @@
-package org.petehering.spgf;
+package spgf.platform;
 
-import com.sun.glass.events.KeyEvent;
-import static java.awt.Color.WHITE;
 import java.awt.Graphics;
 import static java.awt.event.KeyEvent.VK_COMMA;
 import static java.awt.event.KeyEvent.VK_DOWN;
@@ -17,10 +15,6 @@ import spgf.core.Game;
 import spgf.core.GamePanel;
 import spgf.core.Keyboard;
 import spgf.core.Loop;
-import spgf.platform.IniParser;
-import spgf.platform.State;
-import spgf.platform.TileLayer;
-import spgf.platform.Viewport;
 
 public class ViewportTest implements Game
 {

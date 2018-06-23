@@ -1,9 +1,11 @@
-package org.petehering.spgf;
+package spgf.platform;
 
 import spgf.platform.IniParser;
 import spgf.platform.TileLayer;
 import java.io.IOException;
 import static java.lang.System.out;
+import java.util.List;
+import spgf.platform.Actor;
 import spgf.platform.State;
 import spgf.platform.Tile;
 
@@ -14,7 +16,8 @@ public class IniParserTest
     {
         IniParser parser = new IniParser("/test01.ini");
         TileLayer tl = parser.getTileLayer();
-        State[] player = parser.getStates("player");
+        State[] player = parser.getStates("testStates1");
+        List<Actor> actors = parser.getActors ();
         
         for (int r = 0; r < tl.rows; r++)
         {
@@ -37,6 +40,11 @@ public class IniParserTest
         for (State s : player)
         {
             out.printf("%2d: %b\n", s.id, s.loop);
+        }
+        
+        for (Actor a : actors)
+        {
+            out.println (a.getClass().getSimpleName());
         }
     }
 }
