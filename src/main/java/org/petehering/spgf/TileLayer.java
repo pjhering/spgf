@@ -1,5 +1,6 @@
 package org.petehering.spgf;
 
+import java.awt.Graphics2D;
 import static java.util.Objects.requireNonNull;
 import static org.petehering.spgf.Utility.requireGreaterThan;
 
@@ -11,12 +12,12 @@ import static org.petehering.spgf.Utility.requireGreaterThan;
 public class TileLayer
 {
 
-    private Tileset tileset;
+    private final Tileset tileset;
     public final int rows;
     public final int columns;
     public final int width;
     public final int height;
-    private int[][] tiles;
+    private final int[][] tiles;
 
     public TileLayer(Tileset tileset, int rows, int columns)
     {
@@ -26,6 +27,34 @@ public class TileLayer
         this.tiles = new int[rows][columns];
         this.width = columns * tileset.tileWidth;
         this.height = rows * tileset.tileHeight;
+    }
+    
+    public void draw (Graphics2D g, Viewport vp)
+    {
+        int cols = getColumn (vp.width);
+        int rows = getRow (vp.height);
+        int c1 = getColumn (vp.getX());
+        int r1 = getRow (vp.getY());
+        
+        for (int r = 0; r < rows; r++)
+        {
+            int r2 = r + r1;
+            
+            if (r2 >= tiles.length)
+            {
+                break;
+            }
+            
+            for (int c = 0; c < cols; c++)
+            {
+                int c2 = c + c1;
+                
+                if (c2 >= tiles[r2].length)
+                {
+                    break;
+                }
+            }
+        }
     }
 
     public int getTileWidth()
@@ -47,16 +76,30 @@ public class TileLayer
     {
         return (int) (y / tileset.tileHeight);
     }
+    
+    public boolean isBlocked (float x, float y)
+    {
+        int row = getRow (y);
+        int col = getColumn (x);
+        return isBlocked (row, col);
+    }
 
     public boolean isBlocked(int row, int column)
     {
-        int i = tiles[row][columns];
+        int i = getId(row, columns);
         return tileset.isBlocked(i);
     }
-
+    
+    public boolean isHidden (float x, float y)
+    {
+        int row = getRow (y);
+        int col = getColumn (x);
+        return isHidden (row, col);
+    }
+    
     public boolean isHidden(int row, int column)
     {
-        int i = tiles[row][columns];
+        int i = getId(row, columns);
         return tileset.isHidden(i);
     }
 
