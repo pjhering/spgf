@@ -4,16 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import static java.util.Objects.requireNonNull;
 import javax.imageio.ImageIO;
-import static org.petehering.spgf.Utility.getSubimageArray;
+import static org.petehering.spgf.Utility.subimages;
 
 public class Spritesheet
 {
 
     private BufferedImage image;
-    
-    public Spritesheet (BufferedImage image)
+
+    public Spritesheet(BufferedImage image)
     {
-        this.image = requireNonNull (image);
+        this.image = requireNonNull(image);
     }
 
     public Spritesheet(String path)
@@ -24,13 +24,13 @@ public class Spritesheet
         }
         catch (Exception ex)
         {
-            throw new RuntimeException (ex);
+            throw new RuntimeException(ex);
         }
     }
 
     public BufferedImage[] array(int x, int y, int width, int height, int rows, int columns)
     {
-        return getSubimageArray(image, x, y, width, height, rows, columns);
+        return subimages(image, x, y, width, height, rows, columns);
     }
 
     public BufferedImage[] array(int rows, int columns)

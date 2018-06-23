@@ -41,15 +41,15 @@ public class GamePanel extends JComponent
         this.addMouseListener(mouse);
         this.addMouseMotionListener(mouse);
     }
-    
-    public JFrame openInWindow (String title)
+
+    public JFrame openInWindow(String title)
     {
-        JFrame frame = new JFrame (title);
+        JFrame frame = new JFrame(title);
         frame.setContentPane(this);
         frame.pack();
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        
+
         return frame;
     }
 
