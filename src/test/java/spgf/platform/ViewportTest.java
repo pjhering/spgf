@@ -119,7 +119,7 @@ public class ViewportTest implements Game
         }
         
         kb.update();
-        vp.update(x, y, tl);
+        vp.update(x+16, y+16, tl);
         s[i].update(elapsedMilliseconds, x, y);
 
         Graphics g = gp.getDrawGraphics();

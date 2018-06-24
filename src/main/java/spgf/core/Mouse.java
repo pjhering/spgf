@@ -11,6 +11,8 @@ public class Mouse implements MouseInputListener
     private int button;
     private int clickCount;
     private Point location;
+    private int deltaX;
+    private int deltaY;
 
     public Mouse()
     {
@@ -55,7 +57,13 @@ public class Mouse implements MouseInputListener
     @Override
     public void mouseMoved(MouseEvent e)
     {
-        this.location = e.getPoint();
+        Point p = e.getPoint();
+        if (location != null)
+        {
+            this.deltaX = p.x - location.x;
+            this.deltaY = p.y - location.y;
+        }
+        this.location = p;
     }
 
     public boolean isDown()
@@ -76,5 +84,15 @@ public class Mouse implements MouseInputListener
     public Point getLocation()
     {
         return location;
+    }
+
+    public int getDeltaX()
+    {
+        return deltaX;
+    }
+
+    public int getDeltaY()
+    {
+        return deltaY;
     }
 }

@@ -24,41 +24,89 @@ public class TileLayer
     {
         this.rows = requireGreaterThan(0, rows);
         this.columns = requireGreaterThan(0, columns);
-        this.tileWidth = requireGreaterThan (0, tileWidth);
-        this.tileHeight = requireGreaterThan (0, tileHeight);
+        this.tileWidth = requireGreaterThan(0, tileWidth);
+        this.tileHeight = requireGreaterThan(0, tileHeight);
         this.width = columns * tileWidth;
         this.height = rows * tileHeight;
         this.tiles = new Tile[rows][columns];
     }
-    
-    public Tile get (int row, int column)
+
+    public Tile[] get(Actor a)
     {
-        return tiles[row][column];
-    }
-    
-    public void set (int row, int column, BufferedImage image, int id, boolean blocked, boolean hidden)
-    {
-        int x = column * tileHeight;
-        int y = row * tileWidth;
-        tiles[row][column] = new Tile (image, id, x, y, tileWidth, tileHeight, blocked, hidden);
-    }
-    
-    public void set (int row, int column, BufferedImage image, int id)
-    {
-        set (row, column, image, id, true, false);
-    }
-    
-    public void draw (Graphics g, Viewport vp)
-    {
-        for (int r = 0; r < rows; r++)
+        return new Tile[]
         {
-            for (int c = 0; c < columns; c++)
+            get(a.x, a.y),
+            get(a.x + a.width, a.y),
+            get(a.x, a.y + a.height),
+            get(a.x + a.width, a.y + a.height)
+        };
+    }
+
+    public Tile get(float x, float y)
+    {
+        int row = (int) (y / tileHeight);
+        int col = (int) (x / tileWidth);
+        return get(row, col);
+    }
+
+    public Tile get(int row, int column)
+    {
+        if (0 <= row && row < tiles.length)
+        {
+            if (0 <= column && column < tiles[row].length)
+            {
+                return tiles[row][column];
+            }
+        }
+
+        return null;
+    }
+
+    public void set(int row, int column, BufferedImage image, int id, boolean blocked, boolean hidden)
+    {
+        if (0 <= row && row < tiles.length)
+        {
+            if (0 <= column && column < tiles[row].length)
+            {
+                int x = column * tileHeight;
+                int y = row * tileWidth;
+                tiles[row][column] = new Tile(image, id, x, y, tileWidth, tileHeight, blocked, hidden);
+            }
+        }
+    }
+
+    public void set(int row, int column, BufferedImage image, int id)
+    {
+        set(row, column, image, id, true, false);
+    }
+    
+    private int column (float x)
+    {
+        return (int)(x / tileWidth);
+    }
+    
+    private int row (float y)
+    {
+        return (int)(y / tileHeight);
+    }
+
+    public void draw(Graphics g, Viewport vp)
+    {
+        OUTER:
+        for (int r = row (vp.getY()); r < rows; r++)
+        {
+            INNER:
+            for (int c = column (vp.getX()); c < columns; c++)
             {
                 if (tiles[r][c] != null && !tiles[r][c].hidden)
                 {
-                    if (vp.contains (tiles[r][c]))
+                    if (vp.contains(tiles[r][c]))
                     {
-                        tiles[r][c].draw (g, vp.getOffset());
+                        tiles[r][c].draw(g, vp.getOffset());
+                    }
+                    else
+                    {
+                        break INNER;
                     }
                 }
             }
