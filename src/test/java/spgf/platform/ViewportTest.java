@@ -21,12 +21,8 @@ public class ViewportTest implements Game
 
     public static void main(String[] args) throws IOException
     {
-        IniParser parser = new IniParser("/test01.ini");
-        TileLayer layer = parser.getTileLayer();
-        State[] states = parser.getStates("player");
         GamePanel panel = new GamePanel(640, 480);
-        Viewport view = new Viewport(640, 480);
-        ViewportTest game = new ViewportTest(panel, layer, states, view);
+        ViewportTest game = new ViewportTest(panel);
         Loop loop = new Loop(game, 60);
 
         JFrame frame = panel.openInWindow("Viewport Test");
@@ -51,6 +47,7 @@ public class ViewportTest implements Game
     }
 
     private final GamePanel gp;
+    private final Background bg;
     private final TileLayer tl;
     private final State[] s;
     private final Viewport vp;
@@ -58,12 +55,22 @@ public class ViewportTest implements Game
     private float y;
     private int i;
 
-    ViewportTest(GamePanel gp, TileLayer tl, State[] s, Viewport vp)
+    ViewportTest(GamePanel gp)
     {
         this.gp = gp;
-        this.tl = tl;
-        this.s = s;
-        this.vp = vp;
+        this.vp = new Viewport(gp.getWidth(), gp.getHeight());
+        
+        try
+        {
+            IniParser parser = new IniParser("/test01.ini");
+            this.bg = parser.getBackground();
+            this.tl = parser.getTileLayer();
+            this.s = parser.getStates("testStates1");
+        }
+        catch (IOException ex)
+        {
+            throw new RuntimeException (ex);
+        }
     }
 
     @Override
@@ -115,8 +122,8 @@ public class ViewportTest implements Game
         vp.update(x, y, tl);
         s[i].update(elapsedMilliseconds, x, y);
 
-        gp.clear();
         Graphics g = gp.getDrawGraphics();
+        bg.draw(g, vp);
         tl.draw(g, vp);
         s[i].draw(g);
         gp.present();

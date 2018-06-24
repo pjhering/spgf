@@ -36,6 +36,7 @@ public class IniParser
     private Map<String, BufferedImage> imageMap;
     private Map<String, State[]> statesMap;
     private List<Actor> actorsList;
+    private Background background;
     private TileLayer tileLayer;
     private BufferedImage[] tileset;
     private boolean[] blocked;
@@ -56,6 +57,9 @@ public class IniParser
             {
                 switch (line)
                 {
+                    case "[background]":
+                        parseBackground(buffer);
+                        break;
                     case "[tileset]":
                         parseTileset(buffer);
                         break;
@@ -73,6 +77,16 @@ public class IniParser
                 }
             }
         }
+    }
+    
+    private void parseBackground(BufferedReader buffer) throws IOException
+    {
+        if (!next(buffer))
+        {
+            throw exception ("expected background configuration");
+        }
+        
+        background = new Background (loadImage(tokens[0]));
     }
 
     private void parseTileset(BufferedReader buffer) throws IOException
@@ -304,5 +318,10 @@ public class IniParser
     public TileLayer getTileLayer()
     {
         return tileLayer;
+    }
+    
+    public Background getBackground ()
+    {
+        return background;
     }
 }

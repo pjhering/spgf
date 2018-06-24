@@ -1,13 +1,8 @@
 package spgf.platform;
 
-import spgf.platform.IniParser;
-import spgf.platform.TileLayer;
 import java.io.IOException;
 import static java.lang.System.out;
 import java.util.List;
-import spgf.platform.Actor;
-import spgf.platform.State;
-import spgf.platform.Tile;
 
 public class IniParserTest
 {
@@ -15,6 +10,7 @@ public class IniParserTest
     public static void main(String[] args) throws IOException
     {
         IniParser parser = new IniParser("/test01.ini");
+        Background bg = parser.getBackground();
         TileLayer tl = parser.getTileLayer();
         State[] player = parser.getStates("testStates1");
         List<Actor> actors = parser.getActors ();
