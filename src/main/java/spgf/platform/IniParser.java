@@ -41,6 +41,7 @@ public class IniParser
     private BufferedImage[] tileset;
     private boolean[] blocked;
     private boolean[] hidden;
+    private Stage stage;
 
     public IniParser(String path) throws IOException
     {
@@ -76,6 +77,8 @@ public class IniParser
                         throw exception("unexpected input: " + line);
                 }
             }
+            
+            stage = new Stage (background, tileLayer, actorsList);
         }
     }
     
@@ -323,5 +326,10 @@ public class IniParser
     public Background getBackground ()
     {
         return background;
+    }
+    
+    public Stage getStage ()
+    {
+        return stage;
     }
 }

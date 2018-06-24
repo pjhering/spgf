@@ -13,4 +13,14 @@ public class TestActor extends Actor
     public void act(long elapsed)
     {
     }
+
+    @Override
+    public void hitTiles(Tile[] tiles)
+    {
+    }
+
+    @Override
+    public void hitActor(Actor a)
+    {
+    }
 }

@@ -33,6 +33,10 @@ public abstract class Actor
     
     public abstract void act (long elapsed);
     
+    public abstract void hitTiles (Tile[] tiles);
+    
+    public abstract void hitActor (Actor a);
+    
     protected boolean add (Actor actor)
     {
         return added.add(actor);
