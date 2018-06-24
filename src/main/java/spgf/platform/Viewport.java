@@ -44,6 +44,14 @@ public class Viewport
     {
         return y;
     }
+    
+    boolean contains (Actor actor)
+    {
+        return  this.x < actor.x + actor.width &&
+                actor.x < this.x + this.width &&
+                this.y < actor.y + actor.height &&
+                actor.y < this.x + this.height;
+    }
 
     boolean contains(Tile tile)
     {
