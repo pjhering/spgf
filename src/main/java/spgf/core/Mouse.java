@@ -4,6 +4,12 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
 
+/**
+ * The <code>Mouse</code> provides access to mouse input.  If event-based
+ * input is needed, add a <code>MouseListener</code> or 
+ * <code>MouseMotionListener</code> to the <code>GamePanel</code>.
+ * @author tinman
+ */
 public class Mouse implements MouseInputListener
 {
 
@@ -66,11 +72,18 @@ public class Mouse implements MouseInputListener
         this.location = p;
     }
 
+    /**
+     * return turns true if a mouse button is currently pressed.
+     * @return 
+     */
     public boolean isDown()
     {
         return down;
     }
 
+    /**
+     * @return the button number or -1 if no button is pressed.
+     */
     public int getButton()
     {
         return button;

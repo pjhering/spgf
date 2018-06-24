@@ -77,19 +77,19 @@ public class IniParser
                         throw exception("unexpected input: " + line);
                 }
             }
-            
-            stage = new Stage (background, tileLayer, actorsList);
+
+            stage = new Stage(background, tileLayer, actorsList);
         }
     }
-    
+
     private void parseBackground(BufferedReader buffer) throws IOException
     {
         if (!next(buffer))
         {
-            throw exception ("expected background configuration");
+            throw exception("expected background configuration");
         }
-        
-        background = new Background (loadImage(tokens[0]));
+
+        background = new Background(loadImage(tokens[0]));
     }
 
     private void parseTileset(BufferedReader buffer) throws IOException
@@ -247,7 +247,7 @@ public class IniParser
                 float h = parseFloat(tokens[5]);
                 Constructor ctor = c.getConstructor(ACTOR_ARGS);
                 Actor a = (Actor) ctor.newInstance(s, x, y, w, h);
-                
+
                 actorsList.add(a);
             }
             catch (ClassNotFoundException |
@@ -307,8 +307,8 @@ public class IniParser
 
         return true;
     }
-    
-    public List<Actor> getActors ()
+
+    public List<Actor> getActors()
     {
         return actorsList;
     }
@@ -322,13 +322,13 @@ public class IniParser
     {
         return tileLayer;
     }
-    
-    public Background getBackground ()
+
+    public Background getBackground()
     {
         return background;
     }
-    
-    public Stage getStage ()
+
+    public Stage getStage()
     {
         return stage;
     }

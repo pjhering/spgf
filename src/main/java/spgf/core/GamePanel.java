@@ -9,6 +9,12 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+/**
+ * The <code>GamePanel</code> is the visual player interface.  It provides a
+ * <code>Graphics</code> context for rendering the game and a
+ * <code>Keyboard</code> and <code>Mouse</code> object to access user input.
+ * @author tinman
+ */
 public class GamePanel extends JComponent
 {
 
@@ -40,16 +46,15 @@ public class GamePanel extends JComponent
         this.mouse = new Mouse();
         this.addMouseListener(mouse);
         this.addMouseMotionListener(mouse);
-        
+
         this.setFocusable(true);
     }
-//    
-//    @Override
-//    public void addNotify()
-//    {
-//        this.requestFocusInWindow();
-//    }
 
+    /**
+     * The <code>openInWindow</code> method is provided as a convienence.
+     * @param title the <code>JFrame</code> title
+     * @return the newly created <code>JFrame</code>.
+     */
     public JFrame openInWindow(String title)
     {
         JFrame frame = new JFrame(title);
@@ -71,11 +76,18 @@ public class GamePanel extends JComponent
         return keyboard;
     }
 
+    /**
+     * Fills the buffer with black
+     */
     public void clear()
     {
         clear(BLACK);
     }
 
+    /**
+     * Fills the buffer with the provided color
+     * @param color the clear <code>Color</code>
+     */
     public void clear(Color color)
     {
         Graphics g = this.getDrawGraphics();
@@ -83,11 +95,19 @@ public class GamePanel extends JComponent
         g.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    /**
+     * The <code>Graphics</code> context that should be used to render the game
+     * @return the graphics context
+     */
     public Graphics getDrawGraphics()
     {
         return ((front == page1) ? page2 : page1).getGraphics();
     }
 
+    /**
+     * Flips the buffers and draws the front buffer to the screen. This must be
+     * called to make whatever rendering has been performed visible.
+     */
     public void present()
     {
         front = (front == page1) ? page2 : page1;

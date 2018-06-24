@@ -1,6 +1,5 @@
 package spgf.platform;
 
-
 public class TestActor extends Actor
 {
 

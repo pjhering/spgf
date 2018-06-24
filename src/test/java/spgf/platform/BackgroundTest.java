@@ -12,9 +12,9 @@ import spgf.core.Game;
 import spgf.core.GamePanel;
 import spgf.core.Loop;
 
-
 public class BackgroundTest implements Game
 {
+
     public static void main(String[] args) throws IOException
     {
         BufferedImage image;
@@ -22,13 +22,13 @@ public class BackgroundTest implements Game
         {
             image = ImageIO.read(stream);
         }
-        
-        GamePanel gp = new GamePanel (640, 480);
-        Background bg = new Background (image);
-        Viewport vp = new Viewport (640, 480);
-        Game game = new BackgroundTest (gp, bg, vp);
-        Loop loop = new Loop (game, 60);
-        
+
+        GamePanel gp = new GamePanel(640, 480);
+        Background bg = new Background(image);
+        Viewport vp = new Viewport(640, 480);
+        Game game = new BackgroundTest(gp, bg, vp);
+        Loop loop = new Loop(game, 60);
+
         JFrame frame = gp.openInWindow("Background Test");
         frame.addWindowListener(new WindowAdapter()
         {
@@ -37,7 +37,7 @@ public class BackgroundTest implements Game
             {
                 loop.start();
             }
-            
+
             @Override
             public void windowClosing(WindowEvent e)
             {
@@ -47,12 +47,12 @@ public class BackgroundTest implements Game
         });
         frame.setVisible(true);
     }
-    
+
     private final GamePanel gp;
     private final Background bg;
     private final Viewport vp;
-    
-    private BackgroundTest (GamePanel gp, Background bg, Viewport vp)
+
+    private BackgroundTest(GamePanel gp, Background bg, Viewport vp)
     {
         this.bg = bg;
         this.gp = gp;

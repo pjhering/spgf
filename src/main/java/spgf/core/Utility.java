@@ -1,7 +1,10 @@
 package spgf.core;
 
 import java.awt.image.BufferedImage;
-
+/**
+ * The <code>Utility</code> class provides several useful utility functions.
+ * @author tinman
+ */
 public final class Utility
 {
 
@@ -45,6 +48,12 @@ public final class Utility
         return array;
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @param max the high limit
+     * @return the value or either the low or high limit
+     */
     public static int clamp(int value, int min, int max)
     {
         if (value < min)
@@ -60,6 +69,12 @@ public final class Utility
         return value;
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @param max the high limit
+     * @return the value or either the low or high limit
+     */
     public static long clamp(long value, long min, long max)
     {
         if (value < min)
@@ -75,6 +90,12 @@ public final class Utility
         return value;
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @param max the high limit
+     * @return the value or either the low or high limit
+     */
     public static float clamp(float value, float min, float max)
     {
         if (value < min)
@@ -90,6 +111,12 @@ public final class Utility
         return value;
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @param max the high limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static int requireInRange(int value, int min, int max)
     {
         if (min < value && value <= max)
@@ -100,6 +127,12 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @param max the high limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static long requireInRange(long value, long min, long max)
     {
         if (min < value && value <= max)
@@ -110,6 +143,12 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @param max the high limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static float requireInRange(float value, float min, float max)
     {
         if (min < value && value <= max)
@@ -120,6 +159,11 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static int requireGreaterThanOrEqual(int min, int value)
     {
         if (min <= value)
@@ -130,6 +174,11 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static long requireGreaterThanOrEqual(long min, long value)
     {
         if (min <= value)
@@ -140,6 +189,11 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static float requireGreaterThanOrEqual(float min, float value)
     {
         if (min <= value)
@@ -150,6 +204,11 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static int requireGreaterThan(int min, int value)
     {
         if (min < value)
@@ -160,6 +219,11 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static long requireGreaterThan(long min, long value)
     {
         if (min < value)
@@ -170,6 +234,11 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * @param value the target value
+     * @param min the low limit
+     * @return the value or throw a <code>RuntimeException</code>.
+     */
     public static float requireGreaterThan(float min, float value)
     {
         if (min < value)
@@ -180,6 +249,12 @@ public final class Utility
         throw new RuntimeException();
     }
 
+    /**
+     * Requires that the array and all its elements are not null.
+     * @param <T>
+     * @param array
+     * @return <code>array</code> or throw a <code>RuntimeException</code>.
+     */
     public static <T> T[] requireNonNull(T[] array)
     {
         if (array != null)
@@ -204,6 +279,12 @@ public final class Utility
         }
     }
 
+    /**
+     * Requires that the array and all its elements are not null.
+     * @param <T>
+     * @param array
+     * @return <code>array</code> or throw a <code>RuntimeException</code>.
+     */
     public static <T> T[][] requireNonNull(T[][] array)
     {
         if (array != null)

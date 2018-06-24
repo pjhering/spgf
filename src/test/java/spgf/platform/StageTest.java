@@ -9,9 +9,9 @@ import spgf.core.Game;
 import spgf.core.GamePanel;
 import spgf.core.Loop;
 
-
 public class StageTest implements Game
 {
+
     public static void main(String[] args)
     {
         GamePanel panel = new GamePanel(640, 480);
@@ -27,7 +27,7 @@ public class StageTest implements Game
                 panel.requestFocusInWindow();
                 loop.start();
             }
-            
+
             @Override
             public void windowClosing(WindowEvent e)
             {
@@ -37,12 +37,12 @@ public class StageTest implements Game
         });
         frame.setVisible(true);
     }
-    
+
     private final GamePanel panel;
     private final Viewport view;
     private final Stage stage;
-    
-    private StageTest (GamePanel panel)
+
+    private StageTest(GamePanel panel)
     {
         this.panel = panel;
         this.view = new Viewport(panel.getWidth(), panel.getHeight());
@@ -53,7 +53,7 @@ public class StageTest implements Game
         }
         catch (IOException ex)
         {
-            throw new RuntimeException (ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -66,7 +66,7 @@ public class StageTest implements Game
     public void tick(long elapsedMilliseonds)
     {
         stage.update(elapsedMilliseonds, view);
-        
+
         Graphics g = panel.getDrawGraphics();
         stage.draw(g, view);
         panel.present();

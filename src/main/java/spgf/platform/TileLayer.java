@@ -79,24 +79,24 @@ public class TileLayer
     {
         set(row, column, image, id, true, false);
     }
-    
-    private int column (float x)
+
+    private int column(float x)
     {
-        return (int)(x / tileWidth);
+        return (int) (x / tileWidth);
     }
-    
-    private int row (float y)
+
+    private int row(float y)
     {
-        return (int)(y / tileHeight);
+        return (int) (y / tileHeight);
     }
 
     public void draw(Graphics g, Viewport vp)
     {
         OUTER:
-        for (int r = row (vp.getY()); r < rows; r++)
+        for (int r = row(vp.getY()); r < rows; r++)
         {
             INNER:
-            for (int c = column (vp.getX()); c < columns; c++)
+            for (int c = column(vp.getX()); c < columns; c++)
             {
                 if (tiles[r][c] != null && !tiles[r][c].hidden)
                 {

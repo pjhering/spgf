@@ -59,7 +59,7 @@ public class ViewportTest implements Game
     {
         this.gp = gp;
         this.vp = new Viewport(gp.getWidth(), gp.getHeight());
-        
+
         try
         {
             IniParser parser = new IniParser("/test01.ini");
@@ -69,7 +69,7 @@ public class ViewportTest implements Game
         }
         catch (IOException ex)
         {
-            throw new RuntimeException (ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -104,12 +104,12 @@ public class ViewportTest implements Game
         if (kb.isPressed(VK_COMMA))
         {
             i -= 1;
-            
+
             if (i < 0)
             {
                 i = s.length - 1;
             }
-            
+
             s[i].reset();
         }
         if (kb.isPressed(VK_PERIOD))
@@ -117,9 +117,9 @@ public class ViewportTest implements Game
             i = (i + 1) % s.length;
             s[i].reset();
         }
-        
+
         kb.update();
-        vp.update(x+16, y+16, tl);
+        vp.update(x + 16, y + 16, tl);
         s[i].update(elapsedMilliseconds, x, y);
 
         Graphics g = gp.getDrawGraphics();

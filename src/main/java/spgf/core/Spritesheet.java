@@ -6,6 +6,11 @@ import static java.util.Objects.requireNonNull;
 import javax.imageio.ImageIO;
 import static spgf.core.Utility.subimages;
 
+/**
+ * The <code>Spritesheet</code> is a utility class for extracting single or 
+ * multiple subimages.
+ * @author tinman
+ */
 public class Spritesheet
 {
 
